@@ -7,11 +7,12 @@ import matplotlib.pyplot as plt
 # %%
 '''Para detectar olhos e bocas vamos utilizar 2 imagens, uma que contem apenas uma pessoa e a outra contém várias pessoas'''
 
-image1 = cv2.imread(r"/data/face_images/image1.jpeg",0)
-image2 = cv2.imread(r"/data/face_images/image2.jpeg",0)
+image1 = cv2.imread("C:/Users/T-GAMER/projetos-data-science/face-recognition/data/image1.jpg",0)
+image2 = cv2.imread("C:/Users/T-GAMER/projetos-data-science/face-recognition/data/image2.jpg",0)
+print(image1.shape)
 # %%
 # abrindo a imagem 1 em escala de cinza
-plt.imshow(image1, cmap = "gray")
+plt.imshow(image1, cmap="gray")
 # %%
 '''Como vamos utilizar o algoritmo Viola-Jones para detecção de face, olhos e boca, precisamos passar o path do algoritmo para o metodo CascadeClassifier(), por isso utilizaremos o comando abaixo para encontrar o path do arquivo XML que contem o algoritmo'''
 cv2.data.haarcascades
@@ -30,18 +31,21 @@ face_detector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_front
 
 def detect_face(image):
     face_image = image.copy()
-    face_rectangle = face_detector.detectMultiScale(face_image)
+    face_rectangle = face_detector.detectMultiScale(face_image, 
+                                                    scaleFactor=1.5, 
+                                                    minSize=(35, 35), 
+                                                    flags=cv2.CASCADE_SCALE_IMAGE)
     for(x, y, width, height) in face_rectangle:
         cv2.rectangle(face_image,(x, y),
                       (x + width, y + height),
-                      (255,255,255),
-                      8)
+                      (0,0,255),
+                      3)
     return face_image
 # %%
 '''Para detecar o rosto, passaremos a imagem do rosto no metódo detect_face() criado acima.'''
 detection_result = detect_face(image1)
 
 '''Para verificar a imagem com detecção de rosto, passaremos o detection_result para o metódo imshow()'''
-plt.imshow(detection_result, cmap= 'gray')
+cv2.imshow("Face",detection_result)
 
 # %%
