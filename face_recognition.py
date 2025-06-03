@@ -36,7 +36,7 @@ def detect_face(image):
     face_image = image.copy()
     face_rectangle = face_detector.detectMultiScale(face_image, 
                                                     scaleFactor=1.5,
-                                                    minNeighbors=5, 
+                                                    minNeighbors=2, 
                                                     minSize=(35, 35), 
                                                     flags=cv2.CASCADE_SCALE_IMAGE)
     for(x, y, width, height) in face_rectangle:
@@ -50,7 +50,7 @@ def detect_face(image):
 detection_result_image1 = detect_face(image1)
 
 '''Para verificar a imagem com detecção de rosto, passaremos o detection_result para o metódo imshow()'''
-plt.imshow(cv2.cvtColor(detection_result, cv2.COLOR_BGR2RGB))  # Convertendo BGR para RGB
+plt.imshow(cv2.cvtColor(detection_result_image1, cv2.COLOR_BGR2RGB))  # Convertendo BGR para RGB
 plt.axis('off')  # Remove os eixos
 plt.show()
 
@@ -64,11 +64,12 @@ plt.show()
 #Podemos ver que somente 5 rostos foram detectados, vamos tentar outro classificador
 # %%
 face_detector2 = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_alt.xml')
+
 def detect_face2(image):
     face_image = image.copy()
     face_rectangle = face_detector2.detectMultiScale(face_image, 
-                                                    scaleFactor=1.5,
-                                                    minNeighbors=5, 
+                                                    scaleFactor=1.1, #ajustando de 1.5 para 1.1 foi possível identificar todos os rostos
+                                                    minNeighbors=2,
                                                     minSize=(35, 35), 
                                                     flags=cv2.CASCADE_SCALE_IMAGE)
     
@@ -76,11 +77,12 @@ def detect_face2(image):
         cv2.rectangle(face_image,(x, y),
                       (x + width, y + height),
                       (255,0,0),
-                      7)
+                      3)
     return face_image
 
 detection_result2 = detect_face2(image2)
-plt.imshow(cv2.cvtColor(detection_result_image2, cv2.COLOR_BGR2RGB))  # Convertendo BGR para RGB
+
+plt.imshow(cv2.cvtColor(detection_result2, cv2.COLOR_BGR2RGB))  # Convertendo BGR para RGB
 plt.axis('off')  # Remove os eixos
 plt.show()
 # %%
