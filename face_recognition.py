@@ -35,22 +35,52 @@ face_detector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_front
 def detect_face(image):
     face_image = image.copy()
     face_rectangle = face_detector.detectMultiScale(face_image, 
-                                                    scaleFactor=1.5, 
+                                                    scaleFactor=1.5,
+                                                    minNeighbors=5, 
                                                     minSize=(35, 35), 
                                                     flags=cv2.CASCADE_SCALE_IMAGE)
     for(x, y, width, height) in face_rectangle:
         cv2.rectangle(face_image,(x, y),
                       (x + width, y + height),
-                      (0,0,255),
-                      3)
+                      (255,0,0),
+                      7)
     return face_image
 # %%
 '''Para detecar o rosto, passaremos a imagem do rosto no metódo detect_face() criado acima.'''
-detection_result = detect_face(image1)
+detection_result_image1 = detect_face(image1)
 
 '''Para verificar a imagem com detecção de rosto, passaremos o detection_result para o metódo imshow()'''
 plt.imshow(cv2.cvtColor(detection_result, cv2.COLOR_BGR2RGB))  # Convertendo BGR para RGB
 plt.axis('off')  # Remove os eixos
 plt.show()
 
+# %%
+'''Vamos tentar detectar as faces na imagem 2'''
+detection_result_image2 = detect_face(image2)
+plt.imshow(cv2.cvtColor(detection_result_image2, cv2.COLOR_BGR2RGB))  # Convertendo BGR para RGB
+plt.axis('off')  # Remove os eixos
+plt.show()
+
+#Podemos ver que somente 5 rostos foram detectados, vamos tentar outro classificador
+# %%
+face_detector2 = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_alt.xml')
+def detect_face2(image):
+    face_image = image.copy()
+    face_rectangle = face_detector2.detectMultiScale(face_image, 
+                                                    scaleFactor=1.5,
+                                                    minNeighbors=5, 
+                                                    minSize=(35, 35), 
+                                                    flags=cv2.CASCADE_SCALE_IMAGE)
+    
+    for(x, y, width, height) in face_rectangle:
+        cv2.rectangle(face_image,(x, y),
+                      (x + width, y + height),
+                      (255,0,0),
+                      7)
+    return face_image
+
+detection_result2 = detect_face2(image2)
+plt.imshow(cv2.cvtColor(detection_result_image2, cv2.COLOR_BGR2RGB))  # Convertendo BGR para RGB
+plt.axis('off')  # Remove os eixos
+plt.show()
 # %%
