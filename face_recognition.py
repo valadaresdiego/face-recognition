@@ -9,10 +9,13 @@ import matplotlib.pyplot as plt
 
 image1 = cv2.imread("C:/Users/T-GAMER/projetos-data-science/face-recognition/data/image1.jpg",0)
 image2 = cv2.imread("C:/Users/T-GAMER/projetos-data-science/face-recognition/data/image2.jpg",0)
-print(image1.shape)
+print(image1.shape) #pra saber se a imagem carregou certo
+print(image2.shape) #pra saber se a imagem carregou certo
 # %%
 # abrindo a imagem 1 em escala de cinza
-plt.imshow(image1, cmap="gray")
+plt.imshow(cv2.cvtColor(image1, cv2.COLOR_BGR2RGB))
+plt.axis('off')
+plt.show()
 # %%
 '''Como vamos utilizar o algoritmo Viola-Jones para detecção de face, olhos e boca, precisamos passar o path do algoritmo para o metodo CascadeClassifier(), por isso utilizaremos o comando abaixo para encontrar o path do arquivo XML que contem o algoritmo'''
 cv2.data.haarcascades
@@ -46,6 +49,8 @@ def detect_face(image):
 detection_result = detect_face(image1)
 
 '''Para verificar a imagem com detecção de rosto, passaremos o detection_result para o metódo imshow()'''
-cv2.imshow("Face",detection_result)
+plt.imshow(cv2.cvtColor(detection_result, cv2.COLOR_BGR2RGB))  # Convertendo BGR para RGB
+plt.axis('off')  # Remove os eixos
+plt.show()
 
 # %%
