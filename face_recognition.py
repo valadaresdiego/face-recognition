@@ -3,7 +3,7 @@
 # necessário instalar o OpenCV - pip install opencv-python
 import cv2
 import matplotlib.pyplot as plt
-%matplotlib inline
+
 # %%
 '''Para detectar olhos e bocas vamos utilizar 2 imagens, uma que contem apenas uma pessoa e a outra contém várias pessoas'''
 
@@ -74,7 +74,8 @@ def detect_face2(image):
                                                     flags=cv2.CASCADE_SCALE_IMAGE)
     
     for(x, y, width, height) in face_rectangle:
-        cv2.rectangle(face_image,(x, y),
+        cv2.rectangle(face_image,
+                      (x, y),
                       (x + width, y + height),
                       (255,0,0),
                       3)
@@ -85,4 +86,66 @@ detection_result2 = detect_face2(image2)
 plt.imshow(cv2.cvtColor(detection_result2, cv2.COLOR_BGR2RGB))  # Convertendo BGR para RGB
 plt.axis('off')  # Remove os eixos
 plt.show()
+# %%
+'''Detecção de Olhos'''
+#Para isso, utilizaremos o haarcascade_eye classifier
+#%%
+#criando o objeto eye_detector
+eye_detector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
+
+#%%
+#criando o metódo para detecção de olhos que irá plotar um retangulo quando encontrar o olho na imagem
+#para evitar que a detecção de outros pontos na imagem além dos olhos, precisamos alterar alguns atributos do objeto haarcascade classifier
+
+def detect_eye(image):
+    face_image = image.copy()
+
+    face_rectangle = eye_detector.detectMultiScale(face_image,scaleFactor=1.6,
+                                                   minNeighbors=6,
+                                                   minSize=(35,35),
+                                                   flags=cv2.CASCADE_SCALE_IMAGE)
+                                                   
+    
+    for(x, y, width, height) in face_rectangle:
+        cv2.rectangle(face_image,
+                      (x, y),
+                      (x + width, y + height),
+                      (255,0,0),
+                      3)
+    return face_image
+
+
+# %%
+#passando a image1 para o metódo detect_eye e plotando o resultado para avaliar
+
+detection_eye_result = detect_eye(image1)
+plt.imshow(cv2.cvtColor(detection_eye_result, cv2.COLOR_BGR2RGB))  # Convertendo BGR para RGB
+plt.axis('off')  # Remove os eixos
+plt.show()
+# %%
+def detect_eye2(image):
+    face_image = image.copy()
+
+    face_rectangle = eye_detector.detectMultiScale(face_image,
+                                                   scaleFactor=1.1,
+                                                   minNeighbors=1,
+                                                   #minSize=(35,35),
+                                                   flags=cv2.CASCADE_SCALE_IMAGE)
+                                                   
+    
+    for(x, y, width, height) in face_rectangle:
+        cv2.rectangle(face_image,
+                      (x, y),
+                      (x + width, y + height),
+                      (255,0,0),
+                      3)
+    return face_image
+
+
+
+detection_eye_result2 = detect_eye2(image2)
+plt.imshow(cv2.cvtColor(detection_eye_result2, cv2.COLOR_BGR2RGB))  # Convertendo BGR para RGB
+plt.axis('off')  # Remove os eixos
+plt.show()
+
 # %%
